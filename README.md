@@ -8,7 +8,7 @@
 
 ### Project Description
 
-TODO
+Database application for university recruitment procces.  
 
 ### Database diagram
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
