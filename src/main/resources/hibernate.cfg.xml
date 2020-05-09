@@ -24,6 +24,7 @@
         <!-- Annotated entity classes -->
         <mapping class="model.Student"/>
         <mapping class="model.Exam"/>
+        <mapping class="model.Candidate"/>
 
 
     </session-factory>

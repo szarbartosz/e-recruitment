@@ -1,3 +1,4 @@
+import model.Candidate;
 import model.Exam;
 import model.Student;
 import org.hibernate.Session;
@@ -15,10 +16,15 @@ public class Main {
 
         Student student = new Student("Bartosz", "Szar", "990920", "adsasd", "asdas", "assss", "asdasd");
         Exam exam = new Exam("Matematyka", 0.99);
-        student.addExam(exam);
+        Candidate candidate = new Candidate(false);
 
+
+        student.addExam(exam);
+        student.addCandidate(candidate);
         session.save(student);
         session.save(exam);
+        session.save(candidate);
+
 
         tran.commit();
         session.close();
