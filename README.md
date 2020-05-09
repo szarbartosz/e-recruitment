@@ -10,7 +10,7 @@
 
 TODO
 
-## Contributors :mushroom:
+### Contributors :mushroom:
 
 <br>
 <table>
