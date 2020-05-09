@@ -22,7 +22,7 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- Annotated entity classes -->
-        <mapping class="Klasa"/>
+        <mapping class="model.Student"/>
 
 
     </session-factory>

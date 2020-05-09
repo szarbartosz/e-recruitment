@@ -1,3 +1,4 @@
+import model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,7 +11,7 @@ public class Main {
 
         Session session = factory.openSession();
         Transaction tran = session.beginTransaction();
-        session.save(new Klasa("akldkas"));
+
 
         tran.commit();
         session.close();
