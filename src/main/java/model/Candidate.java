@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,13 +23,16 @@ public class Candidate {
     @NotNull
     private boolean isAccepted;
 
-    public Candidate(boolean isAccepted) {
-        this.isAccepted = isAccepted;
-    }
-
     @ManyToOne
     @JoinColumn(name="STUDENT_FK")
     private Student student;
 
+    @ManyToOne
+    @JoinColumn(name="FIELD_FK")
+    private Field field;
+
+    public Candidate(boolean isAccepted) {
+        this.isAccepted = isAccepted;
+    }
 
 }

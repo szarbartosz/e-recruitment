@@ -18,7 +18,7 @@ import java.util.Set;
 public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int fielsId;
+    private int fieldId;
 
     @NotNull
     private String name;
@@ -33,9 +33,8 @@ public class Field {
     @OneToMany(mappedBy = "field")
     private Set<MainSubject> mainSubjects = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinColumn(name="CANDIDATE_FK")
-    private Set<Candidate> canfidates = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "field")
+    private Set<Candidate> candidates = new LinkedHashSet<>();
 
     public Field(String name, int capacity) {
         this.name = name;
@@ -49,6 +48,6 @@ public class Field {
 
     public void addCandidate(Candidate candidate){
         candidate.setField(this);
-        this.canfidates.add(candidate);
+        this.candidates.add(candidate);
     }
 }
