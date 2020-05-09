@@ -10,7 +10,7 @@
 
 TODO
 
-## Contributors :snowman: :snowman:
+## Contributors :mushroom:
 
 <table>
   <tr>
