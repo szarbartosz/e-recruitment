@@ -7,7 +7,9 @@ import lombok.Setter;
 import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,8 +32,8 @@ public class Field {
     @JoinColumn(name="FACULTY_FK")
     private Faculty faculty;
 
-    @OneToMany(mappedBy = "field")
-    private Set<MainSubject> mainSubjects = new LinkedHashSet<>();
+    @ElementCollection
+    private List<String> mainSubjects = new ArrayList<>();
 
     @OneToMany(mappedBy = "field")
     private Set<Candidate> candidates = new LinkedHashSet<>();
@@ -41,8 +43,7 @@ public class Field {
         this.capacity = capacity;
     }
 
-    public void addMainSubject(MainSubject mainSubject){
-        mainSubject.setField(this);
+    public void addMainSubject(String mainSubject){
         this.mainSubjects.add(mainSubject);
     }
 

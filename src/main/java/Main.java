@@ -1,6 +1,4 @@
-import model.Candidate;
-import model.Exam;
-import model.Student;
+import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,9 +19,21 @@ public class Main {
 
         student.addExam(exam);
         student.addCandidate(candidate);
+
+
+        Faculty faculty = new Faculty("Informatyki, Elektroniki i Telekomunikacji");
+        Field field = new Field("Informatyka", 260);
+        field.addMainSubject("Informatyka");
+        field.addMainSubject("Matematyka");
+        faculty.addField(field);
+
+        field.addCandidate(candidate);
+
         session.save(student);
         session.save(exam);
         session.save(candidate);
+        session.save(faculty);
+        session.save(field);
 
 
         tran.commit();

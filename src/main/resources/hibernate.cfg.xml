@@ -25,7 +25,6 @@
         <mapping class="model.Student"/>
         <mapping class="model.Faculty"/>
         <mapping class="model.Field"/>
-        <mapping class="model.MainSubject"/>
         <mapping class="model.Exam"/>
         <mapping class="model.Candidate"/>
 
