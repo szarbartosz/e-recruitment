@@ -40,8 +40,11 @@ public class Student {
     @NotNull
     private String zipCode;
 
-    @OneToMany
+    @OneToMany(mappedBy = "student")
     private Set<Exam> exams = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "student")
+    private Set<Candidate> candidates = new LinkedHashSet<>();
 
     public Student(String firstName, String secondName, String pesel, String email, String address,
                    String city, String zipCode) {
@@ -57,5 +60,10 @@ public class Student {
     public void addExam(Exam exam){
         exam.setStudent(this);
         this.exams.add(exam);
+    }
+
+    public void addCandidate(Candidate candidate){
+        candidate.setStudent(this);
+        this.candidates.add(candidate);
     }
 }

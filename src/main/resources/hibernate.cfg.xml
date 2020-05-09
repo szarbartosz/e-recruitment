@@ -27,6 +27,7 @@
         <mapping class="model.Field"/>
         <mapping class="model.MainSubject"/>
         <mapping class="model.Exam"/>
+        <mapping class="model.Candidate"/>
 
 
     </session-factory>
