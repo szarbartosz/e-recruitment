@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,6 +40,9 @@ public class Student {
     @NotNull
     private String zipCode;
 
+    @OneToMany
+    private Set<Exam> exams = new LinkedHashSet<>();
+
     public Student(String firstName, String secondName, String pesel, String email, String address,
                    String city, String zipCode) {
         this.firstName = firstName;
@@ -47,5 +52,10 @@ public class Student {
         this.address = address;
         this.city = city;
         this.zipCode = zipCode;
+    }
+
+    public void addExam(Exam exam){
+        exam.setStudent(this);
+        this.exams.add(exam);
     }
 }

@@ -1,3 +1,4 @@
+import model.Exam;
 import model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,12 @@ public class Main {
         Session session = factory.openSession();
         Transaction tran = session.beginTransaction();
 
+        Student student = new Student("Bartosz", "Szar", "990920", "adsasd", "asdas", "assss", "asdasd");
+        Exam exam = new Exam("Matematyka", 0.99);
+        student.addExam(exam);
+
+        session.save(student);
+        session.save(exam);
 
         tran.commit();
         session.close();
