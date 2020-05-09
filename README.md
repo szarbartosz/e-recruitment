@@ -1,16 +1,15 @@
-# Databases class
-## eRecruitment Project
+# eRecruitment Project
 
 [![Maven badge](https://img.shields.io/badge/Maven-4.0.0-red)](https://maven.apache.org)
 [![Lombok badge](https://img.shields.io/badge/Project_Lombok-1.18.12-green)](https://mvnrepository.com/artifact/org.projectlombok/lombok)
 [![Hibernate badge](https://img.shields.io/badge/Hibernate-5.4.13-yellow)](https://mvnrepository.com/artifact/org.hibernate/hibernate-core)
 [![PostgreSql badge](https://img.shields.io/badge/PostgreSQL-42.2.12-%2346A9EE)](https://mvnrepository.com/artifact/org.postgresql/postgresql)
 
-### Project Description
+## Project Description
 
 Database application for university recruitment procces.  
 
-### Database diagram
+## Database diagram
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
 
 ## Contributors :mushroom:
