@@ -22,7 +22,7 @@ public class MainSubject {
 
     @ManyToOne
     @JoinColumn(name="FIELD_FK")
-    private Field fields;
+    private Field field;
 
     public MainSubject(String name) {
         this.name = name;

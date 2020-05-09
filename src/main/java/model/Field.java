@@ -36,4 +36,9 @@ public class Field {
         this.name = name;
         this.capacity = capacity;
     }
+
+    public void addMainSubject(MainSubject mainSubject){
+        mainSubject.setField(this);
+        this.mainSubjects.add(mainSubject);
+    }
 }

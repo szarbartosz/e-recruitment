@@ -28,4 +28,9 @@ public class Faculty {
     public Faculty(String name){
         this.name = name;
     }
+
+    public void addField(Field field){
+        field.setFaculty(this);
+        this.fields.add(field);
+    }
 }
