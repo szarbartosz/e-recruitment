@@ -10,7 +10,7 @@
 
 TODO
 
-## Contributors ✨
+## Contributors :snowman: :snowman:
 
 <table>
   <tr>
