@@ -22,7 +22,7 @@ public class Faculty {
     @NotNull
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "faculty")
     private Set<Field> fields = new LinkedHashSet<>();
 
     public Faculty(String name){
