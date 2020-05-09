@@ -1,4 +1,4 @@
-# Data Bases classes
+# Databases class
 ## eRecruitment Project
 
 [![Maven badge](https://img.shields.io/badge/Maven-4.0.0-red)](https://maven.apache.org)
@@ -9,6 +9,9 @@
 ### Project Description
 
 TODO
+
+### Database diagram
+![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
 
 ## Contributors :mushroom:
 <table>
