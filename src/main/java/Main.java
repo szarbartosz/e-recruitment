@@ -16,9 +16,15 @@ public class Main {
         Exam exam = new Exam("Matematyka", 0.99);
         Candidate candidate = new Candidate(false);
 
+        Student prymus = new Student("Krzysztof", "Nalepa", "996969", "kraleppa@roksa.pl", "autonalepa 420", "za krakowem", "69-420");
+        Exam egzamin = new Exam("Informatyka", 0.69);
+        Candidate kandydat = new Candidate(false);
 
         student.addExam(exam);
         student.addCandidate(candidate);
+
+        prymus.addExam(egzamin);
+        prymus.addCandidate(kandydat);
 
 
         Faculty faculty = new Faculty("Informatyki, Elektroniki i Telekomunikacji");
@@ -28,10 +34,14 @@ public class Main {
         faculty.addField(field);
 
         field.addCandidate(candidate);
+        field.addCandidate(kandydat);
 
         session.save(student);
         session.save(exam);
         session.save(candidate);
+        session.save(prymus);
+        session.save(egzamin);
+        session.save(kandydat);
         session.save(faculty);
         session.save(field);
 
