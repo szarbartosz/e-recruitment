@@ -11,9 +11,7 @@ public class Main {
         StudentDao studentDao = StudentDao.getInstance();
         UniversityDao universityDao = UniversityDao.getInstance();
         try{
-            studentDao.studentApply(15, 20);
-
-
+            universityDao.markAccepted(20);
         }catch (Exception e){
             e.printStackTrace();
         }

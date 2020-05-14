@@ -67,11 +67,11 @@ public class UniversityDao {
         List<Candidate> candidates = queryCandidates.getResultStream().sorted(Comparator.comparing(Candidate::getPointsNumber).reversed()).collect(Collectors.toList());
 
         int capacity = field.getCapacity();
+        Transaction transaction = session.beginTransaction();
         for (int i = 0; i < capacity && i < candidates.size(); i++) {
             candidates.get(i).setAccepted(true);
+            session.update(candidates.get(i));
         }
-        Transaction transaction = session.beginTransaction();
-        session.update(candidates);
         transaction.commit();
         session.close();
 
