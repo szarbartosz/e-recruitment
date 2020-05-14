@@ -3,7 +3,6 @@ package dao;
 import model.Exam;
 import model.Student;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import javax.persistence.TypedQuery;
@@ -11,7 +10,6 @@ import java.util.regex.Pattern;
 
 public class StudentDao {
     private static StudentDao instance;
-    private final SessionFactory sessionFactory;
     private final Pattern emailPattern;
 
     public static StudentDao getInstance(){
@@ -28,7 +26,6 @@ public class StudentDao {
                 "A-Z]{2,7}$";
         this.emailPattern = Pattern.compile(emailRegex);
         Configuration config = new Configuration();
-        sessionFactory = config.configure().buildSessionFactory();
     }
 
     public void addStudent(String firstName, String secondName, String pesel, String email,
@@ -43,7 +40,7 @@ public class StudentDao {
         }
 
         Student student = new Student(firstName, secondName, pesel, email, address, city, zipCode);
-        Session session = sessionFactory.openSession();
+        Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(student);
         transaction.commit();
@@ -51,7 +48,7 @@ public class StudentDao {
     }
 
     private Student getStudentById(int studentId){
-        Session session = sessionFactory.openSession();
+        Session session = SessionFactoryDecorator.openSession();
         TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
         query.setParameter("studentId", studentId);
         return query.getSingleResult();
@@ -65,7 +62,7 @@ public class StudentDao {
 
         Exam exam = new Exam(subject, result);
         student.addExam(exam);
-        Session session = sessionFactory.openSession();
+        Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(exam);
         transaction.commit();
