@@ -51,7 +51,7 @@ public class StudentDao {
         session.close();
     }
 
-    public Student getStudentById(int studentId){
+    private Student getStudentById(int studentId){
         Session session = sessionFactory.openSession();
         TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
         query.setParameter("studentId", studentId);
