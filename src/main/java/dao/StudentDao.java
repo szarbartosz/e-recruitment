@@ -47,25 +47,25 @@ public class StudentDao {
         session.close();
     }
 
-    private Student getStudentById(int studentId){
-        Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
-        query.setParameter("studentId", studentId);
-        return query.getSingleResult();
-    }
-
     public void addExam(int studentId, String subject, double result) throws Exception {
         if (result < 0.0 || result > 1.0){
             throw new Exception("Incorrect exam result");
         }
-        Student student = getStudentById(studentId);
 
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
+        query.setParameter("studentId", studentId);
+        Student student = query.getSingleResult();
         Exam exam = new Exam(subject, result);
         student.addExam(exam);
-        Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(exam);
+        session.update(student);
         transaction.commit();
         session.close();
+    }
+
+    public void studentApply(int studentId, int fieldId){
+
     }
 }

@@ -23,6 +23,8 @@ public class Candidate {
     @NotNull
     private boolean isAccepted;
 
+    private double pointsNumber;
+
     @ManyToOne
     @JoinColumn(name="STUDENT_FK")
     private Student student;

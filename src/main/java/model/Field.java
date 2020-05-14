@@ -35,12 +35,16 @@ public class Field {
     @ElementCollection
     private List<String> mainSubjects = new ArrayList<>();
 
+    @NotNull
+    private boolean recruitmentEnded;
+
     @OneToMany(mappedBy = "field")
     private Set<Candidate> candidates = new LinkedHashSet<>();
 
     public Field(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
+        this.recruitmentEnded = false;
     }
 
     public void addMainSubject(String mainSubject){
