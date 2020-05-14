@@ -1,11 +1,16 @@
 package dao;
 
+import model.Candidate;
 import model.Faculty;
 import model.Field;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UniversityDao {
     private static UniversityDao instance;
@@ -52,6 +57,24 @@ public class UniversityDao {
         session.update(field);
         transaction.commit();
         session.close();
+    }
 
+    public void markAccepted(int fieldId) {
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Field> queryField = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
+        queryField.setParameter("fieldId", fieldId);
+        Field field = queryField.getSingleResult();
+        TypedQuery<Candidate> queryCandidates = session.createQuery("SELECT C FROM Candidate C WHERE C.field = :field", Candidate.class);
+        queryCandidates.setParameter("field", field);
+        ArrayList<Candidate> candidates = (ArrayList<Candidate>) queryCandidates.getResultList();
+        candidates.sort(Collections.reverseOrder());
+        int capacity = field.getCapacity();
+        for (int i = 0; i < capacity; i++) {
+            candidates.get(i).setAccepted(true);
+        }
+        Transaction transaction = session.beginTransaction();
+        session.update(candidates);
+        transaction.commit();
+        session.close();
     }
 }
