@@ -31,7 +31,7 @@ public class UniversityDao {
     }
 
     public void addField(int facultyId, String name, int capacity) throws Exception {
-        if(capacity <= 0.0) {
+        if(capacity <= 0) {
             throw new Exception("Incorrect capacity");
         }
         Faculty faculty = getFacultyById(facultyId);
@@ -56,5 +56,11 @@ public class UniversityDao {
         Field field = getFieldById(fieldId);
 
         field.addMainSubject(subjectName);
+        Session session = SessionFactoryDecorator.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(field);
+        transaction.commit();
+        session.close();
+
     }
 }
