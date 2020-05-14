@@ -1,12 +1,11 @@
 package dao;
 
+import model.Exam;
 import model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.regex.Pattern;
 
@@ -56,23 +55,20 @@ public class StudentDao {
         TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
         query.setParameter("studentId", studentId);
         return query.getSingleResult();
-
     }
 
     public void addExam(int studentId, String subject, double result) throws Exception {
         if (result < 0.0 || result > 1.0){
             throw new Exception("Incorrect exam result");
         }
+        Student student = getStudentById(studentId);
 
-
-
-
-
-
-
-
+        Exam exam = new Exam(subject, result);
+        student.addExam(exam);
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.save(exam);
+        transaction.commit();
+        session.close();
     }
-
-
-
 }

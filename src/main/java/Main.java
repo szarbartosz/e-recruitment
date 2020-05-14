@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         StudentDao studentDao = StudentDao.getInstance();
         try{
-            System.out.println(studentDao.getStudentById(2).getFirstName());
+            studentDao.addExam(1, "język polski", 0.4);
         }catch (Exception e){
             e.printStackTrace();
         }
