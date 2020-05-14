@@ -7,10 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.persistence.TypedQuery;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UniversityDao {
     private static UniversityDao instance;
@@ -66,15 +64,17 @@ public class UniversityDao {
         Field field = queryField.getSingleResult();
         TypedQuery<Candidate> queryCandidates = session.createQuery("SELECT C FROM Candidate C WHERE C.field = :field", Candidate.class);
         queryCandidates.setParameter("field", field);
-        ArrayList<Candidate> candidates = (ArrayList<Candidate>) queryCandidates.getResultList();
-        candidates.sort(Collections.reverseOrder());
+        List<Candidate> candidates = queryCandidates.getResultStream().sorted(Comparator.comparing(Candidate::getPointsNumber).reversed()).collect(Collectors.toList());
+
         int capacity = field.getCapacity();
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < capacity && i < candidates.size(); i++) {
             candidates.get(i).setAccepted(true);
         }
         Transaction transaction = session.beginTransaction();
         session.update(candidates);
         transaction.commit();
         session.close();
+
+
     }
 }

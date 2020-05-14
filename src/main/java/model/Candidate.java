@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Table(name="Candidates")
-public class Candidate implements Comparable<Candidate> {
+public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int candidateId;
@@ -35,8 +35,4 @@ public class Candidate implements Comparable<Candidate> {
         this.isAccepted = isAccepted;
     }
 
-    @Override
-    public int compareTo(Candidate c) {
-        return Double.compare(this.getPointsNumber(), c.getPointsNumber());
-    }
 }
