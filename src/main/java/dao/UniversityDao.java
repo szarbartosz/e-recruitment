@@ -26,22 +26,16 @@ public class UniversityDao {
         session.close();
     }
 
-    private Faculty getFacultyById(int facultyId) {
-        Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
-        query.setParameter("facultyId", facultyId);
-        return query.getSingleResult();
-    }
-
     public void addField(int facultyId, String name, int capacity) throws Exception {
         if(capacity <= 0) {
             throw new Exception("Incorrect capacity");
         }
-        Faculty faculty = getFacultyById(facultyId);
-
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
+        query.setParameter("facultyId", facultyId);
+        Faculty faculty = query.getSingleResult();
         Field field = new Field(name, capacity);
         faculty.addField(field);
-        Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(field);
         transaction.commit();
