@@ -93,12 +93,18 @@ public class StudentDao {
                 .filter(exam -> exam.getSubject().equals("Matematyka podstawowa"))
                 .collect(Collectors.toList());
 
-        if (mainExams.size() == 0 || mathExam.size() != 1){
+        if (mathExam.size() != 1){
             throw new Exception("Not enough exams");
+        }
+        double mainExamsPoints;
+        if (mainExams.size() == 0){
+            mainExamsPoints = 0.0;
+        } else {
+            mainExamsPoints = mainExams.get(0).getResult() * 800;
         }
 
         Candidate candidate = new Candidate(false);
-        candidate.setPointsNumber(mainExams.get(0).getResult() * 800 + mathExam.get(0).getResult() * 200);
+        candidate.setPointsNumber(mainExamsPoints + mathExam.get(0).getResult() * 200);
 
         student.addCandidate(candidate);
         field.addCandidate(candidate);
