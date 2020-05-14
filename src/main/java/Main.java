@@ -1,4 +1,5 @@
 import dao.StudentDao;
+import dao.UniversityDao;
 import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,8 +9,9 @@ import org.hibernate.cfg.Configuration;
 public class Main {
     public static void main(String[] args) {
         StudentDao studentDao = StudentDao.getInstance();
+        UniversityDao universityDao = UniversityDao.getInstance();
         try{
-            studentDao.addExam(1, "język polski", 0.4);
+            universityDao.addMainSubjectToField(11, "Matematyka");
         }catch (Exception e){
             e.printStackTrace();
         }

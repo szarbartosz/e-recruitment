@@ -10,8 +10,11 @@ import javax.persistence.TypedQuery;
 public class UniversityDao {
     private static UniversityDao instance;
 
-    public UniversityDao() {
-        Configuration config = new Configuration();
+    public static UniversityDao getInstance(){
+        if (instance == null){
+            instance = new UniversityDao();
+        }
+        return instance;
     }
 
     public void addFaculty(String name) {
@@ -45,20 +48,14 @@ public class UniversityDao {
         session.close();
     }
 
-    private Field getFieldById(int fieldId) {
+    public void addMainSubjectToField(int fieldId, String subjectName) {
         Session session = SessionFactoryDecorator.openSession();
         TypedQuery<Field> query = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
         query.setParameter("fieldId", fieldId);
-        return query.getSingleResult();
-    }
-
-    public void addMainSubjectToField(int fieldId, String subjectName) {
-        Field field = getFieldById(fieldId);
-
+        Field field = query.getSingleResult();
         field.addMainSubject(subjectName);
-        Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
-        session.save(field);
+        session.update(field);
         transaction.commit();
         session.close();
 
