@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name="Candidates")
-public class Candidate {
+public class Candidate implements Comparable<Candidate> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int candidateId;
@@ -37,4 +35,8 @@ public class Candidate {
         this.isAccepted = isAccepted;
     }
 
+    @Override
+    public int compareTo(Candidate c) {
+        return Double.compare(this.getPointsNumber(), c.getPointsNumber());
+    }
 }
