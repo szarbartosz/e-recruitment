@@ -74,7 +74,13 @@ public class UniversityDao {
         }
         transaction.commit();
         session.close();
+    }
 
-
+    public Collection<Field> getAllFields(){
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Field> query = session.createQuery("From Field F", Field.class);
+        Collection<Field> collection = query.getResultList();
+        session.close();
+        return collection;
     }
 }

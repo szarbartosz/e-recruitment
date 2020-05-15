@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,28 +16,36 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name="Students")
 public class Student {
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int studentId;
 
+    @Expose
     @NotNull
     private String firstName;
 
+    @Expose
     @NotNull
     private String secondName;
 
+    @Expose
     @NotNull
     private String pesel;
 
+    @Expose
     @NotNull
     private String email;
 
+    @Expose
     @NotNull
     private String address;
 
+    @Expose
     @NotNull
     private String city;
 
+    @Expose
     @NotNull
     private String zipCode;
 
@@ -66,4 +75,6 @@ public class Student {
         candidate.setStudent(this);
         this.candidates.add(candidate);
     }
+
+
 }

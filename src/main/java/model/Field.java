@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name="Fields")
 public class Field {
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int fieldId;
 
+    @Expose
     @NotNull
     private String name;
 
+    @Expose
     @NotNull
     private int capacity;
 
@@ -35,6 +39,7 @@ public class Field {
     @ElementCollection
     private List<String> mainSubjects = new ArrayList<>();
 
+    @Expose
     @NotNull
     private boolean recruitmentEnded;
 

@@ -7,7 +7,11 @@ import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import javax.management.openmbean.SimpleType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -115,5 +119,23 @@ public class StudentDao {
         session.update(field);
         transaction.commit();
         session.close();
+    }
+
+    public Collection<Student> getAllStudents(){
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Student> query = session.createQuery("FROM Student", Student.class);
+        Collection<Student> collection = query.getResultList();
+        session.close();
+        return collection;
+    }
+
+    public Student authenticate(String pesel){
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Student> query = session.createQuery("SELECT S FROM Student S WHERE " +
+                "S.pesel = :pesel", Student.class);
+        query.setParameter("pesel", pesel);
+        Student student = query.getSingleResult();
+        session.close();
+        return student;
     }
 }

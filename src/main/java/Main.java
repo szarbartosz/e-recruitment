@@ -1,19 +1,101 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import controller.StandardResponse;
+import controller.Status;
 import dao.StudentDao;
 import dao.UniversityDao;
-import model.Exam;
+import model.Field;
+import model.Student;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collection;
+
+import static spark.Spark.post;
+import static spark.Spark.get;
 
 public class Main {
     public static void main(String[] args) {
         StudentDao studentDao = StudentDao.getInstance();
         UniversityDao universityDao = UniversityDao.getInstance();
-        try{
-            universityDao.markAccepted(20);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+        post("/students", (request, response) -> {
+            response.type("application/json");
+            Student student = new Gson().fromJson(request.body(), Student.class);
+            try {
+                studentDao.addStudent(student.getFirstName(), student.getSecondName(), student.getPesel(),
+                        student.getEmail(), student.getAddress(), student.getCity(), student.getZipCode());
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
+
+        get("/students", (request, response) -> {
+            response.type("application/json");
+            Collection<Student> collection;
+            try {
+                collection = studentDao.getAllStudents();
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(
+                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
+            );
+        });
+
+        get("/autenthicate/:pesel", (request, response) -> {
+            response.type("application/json");
+            Student student;
+            try {
+                student = studentDao.authenticate(request.params(":pesel"));
+
+            } catch (Exception e) {
+                return new Gson().toJson(new StandardResponse(Status.ERROR, "Authentication refused"));
+            }
+            return new Gson().toJson(
+                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                            .excludeFieldsWithoutExposeAnnotation().create().
+                                    toJsonTree(student))
+            );
+        });
+
+        post("/exams", (request, response) -> {
+            response.type("application/json");
+            JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
+            try {
+                studentDao.addExam(object.get("userId").getAsInt(), object.get("subject").getAsString()
+                        , object.get("result").getAsDouble());
+            }catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
+
+        get("/fields", (request, response) -> {
+            response.type("application/json");
+            Collection<Field> collection;
+            try {
+                collection = universityDao.getAllFields();
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(
+                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                            .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection)));
+        });
+
+        post("/candidates", (request, response) -> {
+            response.type("application/json");
+            JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
+            try {
+                studentDao.studentApply(object.get("studentId").getAsInt(),
+                        object.get("fieldId").getAsInt());
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
     }
 }

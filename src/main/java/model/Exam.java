@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
