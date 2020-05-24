@@ -1,8 +1,5 @@
 package controller.config;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public enum Status {
     SUCCESS ("Success"),
     ERROR ("Error");

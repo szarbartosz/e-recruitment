@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import controller.config.StandardResponse;
 import controller.config.Status;
 import model.Faculty;
-import model.Field;
 import spark.Route;
 
 import java.util.Collection;

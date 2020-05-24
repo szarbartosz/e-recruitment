@@ -1,6 +1,5 @@
 package model;
 
-
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

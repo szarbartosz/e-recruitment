@@ -6,7 +6,6 @@ import model.Field;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
