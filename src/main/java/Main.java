@@ -12,7 +12,7 @@ public class Main {
         post("/exams", ExamController.addExam);
         post("fields", FieldController.addField);
         get("/fields", FieldController.getAllFields);
-        post("/faculty", FacultyController.addFaculty);
-        get("/faculty", FacultyController.getAllFaculties);
+        post("/faculties", FacultyController.addFaculty);
+        get("/faculties", FacultyController.getAllFaculties);
     }
 }
