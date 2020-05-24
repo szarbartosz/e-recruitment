@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import controller.StandardResponse;
 import controller.Status;
+import controller.StudentController;
 import dao.StudentDao;
 import dao.UniversityDao;
 import model.Faculty;
@@ -17,35 +18,12 @@ import static spark.Spark.get;
 
 public class Main {
     public static void main(String[] args) {
-        StudentDao studentDao = new StudentDao();
-        UniversityDao universityDao = new UniversityDao();
+        StudentDao studentDao = StudentDao.getInstance();
+        UniversityDao universityDao = UniversityDao.getInstance();
 
-        post("/students", (request, response) -> {
-            response.type("application/json");
-            Student student = new Gson().fromJson(request.body(), Student.class);
-            try {
-                studentDao.addStudent(student.getFirstName(), student.getSecondName(), student.getPesel(),
-                        student.getEmail(), student.getAddress().getStreet(), student.getAddress().getBuildingNumber(),
-                        student.getAddress().getZipCode(), student.getAddress().getCity());
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
-        });
+        post("/students", StudentController.addStudent);
 
-        get("/students", (request, response) -> {
-            response.type("application/json");
-            Collection<Student> collection;
-            try {
-                collection = studentDao.getAllStudents();
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(
-                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
-            );
-        });
+        get("/students", StudentController.getStudents);
 
         get("/autenthicate/:pesel", (request, response) -> {
             response.type("application/json");

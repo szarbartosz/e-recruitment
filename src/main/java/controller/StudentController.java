@@ -1,4 +1,46 @@
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dao.StudentDao;
+import lombok.AllArgsConstructor;
+import model.Student;
+import spark.Route;
+
+import java.util.Collection;
+
 public class StudentController {
+
+    private static StudentDao studentDao = StudentDao.getInstance();
+
+    public static void setStudentDao(StudentDao studentDao) {
+        StudentController.studentDao = studentDao;
+    }
+
+    public static Route addStudent = (request, response) -> {
+        response.type("application/json");
+        Student student = new Gson().fromJson(request.body(), Student.class);
+        try {
+            studentDao.addStudent(student.getFirstName(), student.getSecondName(), student.getPesel(),
+                    student.getEmail(), student.getAddress().getStreet(), student.getAddress().getBuildingNumber(),
+                    student.getAddress().getZipCode(), student.getAddress().getCity());
+        } catch (Exception e){
+            return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+        }
+        return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+    };
+
+    public static Route getStudents = (request, response) -> {
+        response.type("application/json");
+        Collection<Student> collection;
+        try {
+            collection = studentDao.getAllStudents();
+        } catch (Exception e){
+            return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+        }
+        return new Gson().toJson(
+                new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                        .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
+        );
+    };
 }

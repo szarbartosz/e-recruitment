@@ -11,6 +11,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UniversityDao {
+    private static UniversityDao instance;
+
+    public static UniversityDao getInstance(){
+        if (instance == null){
+            instance = new UniversityDao();
+        }
+        return instance;
+    }
+
     public void addFaculty(String name) {
         Faculty faculty = new Faculty(name);
         Session session = SessionFactoryDecorator.openSession();
