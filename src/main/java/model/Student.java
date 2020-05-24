@@ -37,17 +37,8 @@ public class Student {
     @NotNull
     private String email;
 
-    @Expose
-    @NotNull
-    private String address;
-
-    @Expose
-    @NotNull
-    private String city;
-
-    @Expose
-    @NotNull
-    private String zipCode;
+    @Embedded
+    private Address address;
 
     @OneToMany(mappedBy = "student")
     private Set<Exam> exams = new LinkedHashSet<>();
@@ -55,15 +46,13 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<Candidate> candidates = new LinkedHashSet<>();
 
-    public Student(String firstName, String secondName, String pesel, String email, String address,
-                   String city, String zipCode) {
+    public Student(String firstName, String secondName, String pesel, String email, String street,
+                   String buildingNumber, String zipCode, String city) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.pesel = pesel;
         this.email = email;
-        this.address = address;
-        this.city = city;
-        this.zipCode = zipCode;
+        this.address = new Address(street, buildingNumber, zipCode, city);
     }
 
     public void addExam(Exam exam){
