@@ -1,92 +1,15 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import controller.StandardResponse;
-import controller.Status;
-import controller.StudentController;
-import dao.StudentDao;
-import dao.UniversityDao;
-import model.Faculty;
-import model.Field;
-import model.Student;
-
-import java.util.Collection;
-
+import controller.*;
 import static spark.Spark.post;
 import static spark.Spark.get;
 
 public class Main {
     public static void main(String[] args) {
-        StudentDao studentDao = StudentDao.getInstance();
-        UniversityDao universityDao = UniversityDao.getInstance();
-
         post("/students", StudentController.addStudent);
-
-        get("/students", StudentController.getStudents);
-
-        get("/autenthicate/:pesel", (request, response) -> {
-            response.type("application/json");
-            Student student;
-            try {
-                student = studentDao.authenticate(request.params(":pesel"));
-
-            } catch (Exception e) {
-                return new Gson().toJson(new StandardResponse(Status.ERROR, "Authentication refused"));
-            }
-            return new Gson().toJson(
-                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
-                            .excludeFieldsWithoutExposeAnnotation().create().
-                                    toJsonTree(student))
-            );
-        });
-
-        post("/exams", (request, response) -> {
-            response.type("application/json");
-            JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
-            try {
-                studentDao.addExam(object.get("userId").getAsInt(), object.get("subject").getAsString()
-                        , object.get("result").getAsDouble());
-            }catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
-        });
-
-        get("/fields", (request, response) -> {
-            response.type("application/json");
-            Collection<Field> collection;
-            try {
-                collection = universityDao.getAllFields();
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(
-                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
-                            .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection)));
-        });
-
-        post("/candidates", (request, response) -> {
-            response.type("application/json");
-            JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
-            try {
-                studentDao.studentApply(object.get("studentId").getAsInt(),
-                        object.get("fieldId").getAsInt());
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
-        });
-
-        post("/faculty", (request, response) -> {
-            response.type("application/json");
-            Faculty faculty = new Gson().fromJson(request.body(), Faculty.class);
-            try {
-                universityDao.addFaculty(faculty.getName());
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
-        });
+        get("/students", StudentController.getAllStudents);
+        get("/autenthicate/:pesel", AuthenticationController.authenticate);
+        post("/exams", ExamController.addExam);
+        get("/fields", FieldController.getAllFields);
+        post("/candidates", StudentController.apply);
+        post("/faculty", FacultyController.addFaculty);
     }
 }

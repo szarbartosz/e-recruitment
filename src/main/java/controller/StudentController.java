@@ -2,21 +2,16 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.StudentDao;
-import lombok.AllArgsConstructor;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import controller.config.StandardResponse;
+import controller.config.Status;
 import model.Student;
 import spark.Route;
 
 import java.util.Collection;
 
-public class StudentController {
-
-    private static StudentDao studentDao = StudentDao.getInstance();
-
-    public static void setStudentDao(StudentDao studentDao) {
-        StudentController.studentDao = studentDao;
-    }
-
+public class StudentController extends Controller {
     public static Route addStudent = (request, response) -> {
         response.type("application/json");
         Student student = new Gson().fromJson(request.body(), Student.class);
@@ -30,7 +25,7 @@ public class StudentController {
         return new Gson().toJson(new StandardResponse(Status.SUCCESS));
     };
 
-    public static Route getStudents = (request, response) -> {
+    public static Route getAllStudents = (request, response) -> {
         response.type("application/json");
         Collection<Student> collection;
         try {
@@ -43,4 +38,17 @@ public class StudentController {
                         .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
         );
     };
+
+    public static Route apply = (request, response) -> {
+        response.type("application/json");
+        JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
+        try {
+            studentDao.studentApply(object.get("studentId").getAsInt(),
+                    object.get("fieldId").getAsInt());
+        } catch (Exception e){
+            return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+        }
+        return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+    };
 }
+

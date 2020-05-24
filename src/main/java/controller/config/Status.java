@@ -1,4 +1,4 @@
-package controller;
+package controller.config;
 
 import lombok.Getter;
 import lombok.Setter;
