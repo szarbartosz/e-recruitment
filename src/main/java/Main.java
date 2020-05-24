@@ -16,8 +16,8 @@ import static spark.Spark.get;
 
 public class Main {
     public static void main(String[] args) {
-        StudentDao studentDao = StudentDao.getInstance();
-        UniversityDao universityDao = UniversityDao.getInstance();
+        StudentDao studentDao = new StudentDao();
+        UniversityDao universityDao = new UniversityDao();
 
         post("/students", (request, response) -> {
             response.type("application/json");
