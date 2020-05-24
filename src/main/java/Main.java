@@ -6,6 +6,7 @@ import controller.StandardResponse;
 import controller.Status;
 import dao.StudentDao;
 import dao.UniversityDao;
+import model.Faculty;
 import model.Field;
 import model.Student;
 
@@ -93,6 +94,17 @@ public class Main {
             try {
                 studentDao.studentApply(object.get("studentId").getAsInt(),
                         object.get("fieldId").getAsInt());
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
+
+        post("/faculty", (request, response) -> {
+            response.type("application/json");
+            Faculty faculty = new Gson().fromJson(request.body(), Faculty.class);
+            try {
+                universityDao.addFaculty(faculty.getName());
             } catch (Exception e){
                 return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
             }
