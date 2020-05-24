@@ -67,6 +67,14 @@ public class UniversityDao {
         session.close();
     }
 
+    public Collection<Faculty> getAllFaculties(){
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Faculty> query = session.createQuery("From Faculty F", Faculty.class);
+        Collection<Faculty> collection = query.getResultList();
+        session.close();
+        return collection;
+    }
+
     public Collection<Field> getAllFields(){
         Session session = SessionFactoryDecorator.openSession();
         TypedQuery<Field> query = session.createQuery("From Field F", Field.class);

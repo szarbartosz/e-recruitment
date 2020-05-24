@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int facultyId;
 
+    @Expose
     @NotNull
     private String name;
 

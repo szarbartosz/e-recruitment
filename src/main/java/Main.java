@@ -75,19 +75,6 @@ public class Main {
             return new Gson().toJson(new StandardResponse(Status.SUCCESS));
         });
 
-        get("/fields", (request, response) -> {
-            response.type("application/json");
-            Collection<Field> collection;
-            try {
-                collection = universityDao.getAllFields();
-            } catch (Exception e){
-                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-            }
-            return new Gson().toJson(
-                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
-                            .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection)));
-        });
-
         post("/candidates", (request, response) -> {
             response.type("application/json");
             JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
@@ -100,7 +87,7 @@ public class Main {
             return new Gson().toJson(new StandardResponse(Status.SUCCESS));
         });
 
-        post("/faculty", (request, response) -> {
+        post("/faculties", (request, response) -> {
             response.type("application/json");
             Faculty faculty = new Gson().fromJson(request.body(), Faculty.class);
             try {
@@ -109,6 +96,46 @@ public class Main {
                 return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
             }
             return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
+
+        get("/faculties", (request, response) -> {
+            response.type("application/json");
+            Collection<Faculty> collection;
+            try {
+                collection = universityDao.getAllFaculties();
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(
+                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                            .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
+            );
+        });
+
+        post("/fields", (request, response) -> { // dodaje kierunek do wydziału o ID facultyID
+            response.type("application/json");
+            JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
+            try {
+                universityDao.addField(object.get("facultyId").getAsInt(), object.get("name").getAsString(),
+                        object.get("capacity").getAsInt());
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+        });
+
+
+        get("/fields", (request, response) -> {
+            response.type("application/json");
+            Collection<Field> collection;
+            try {
+                collection = universityDao.getAllFields();
+            } catch (Exception e){
+                return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+            }
+            return new Gson().toJson(
+                    new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                            .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection)));
         });
     }
 }
