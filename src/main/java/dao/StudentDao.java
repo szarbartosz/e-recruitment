@@ -38,7 +38,7 @@ public class StudentDao {
     }
 
     public void addStudent(String firstName, String secondName, String pesel, String email,
-                           String address, String city, String zipCode) throws Exception {
+                           String street, String buildingNumber, String zipCode, String city) throws Exception {
 
         if (!this.emailPattern.matcher(email).matches()){
             throw new Exception("Incorrect email address");
@@ -48,7 +48,7 @@ public class StudentDao {
             throw new Exception("Incorrect pesel");
         }
 
-        Student student = new Student(firstName, secondName, pesel, email, address, city, zipCode);
+        Student student = new Student(firstName, secondName, pesel, email, street, buildingNumber, zipCode, city);
         Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(student);

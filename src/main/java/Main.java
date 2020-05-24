@@ -24,7 +24,8 @@ public class Main {
             Student student = new Gson().fromJson(request.body(), Student.class);
             try {
                 studentDao.addStudent(student.getFirstName(), student.getSecondName(), student.getPesel(),
-                        student.getEmail(), student.getAddress(), student.getCity(), student.getZipCode());
+                        student.getEmail(), student.getAddress().getStreet(), student.getAddress().getBuildingNumber(),
+                        student.getAddress().getZipCode(), student.getAddress().getCity());
             } catch (Exception e){
                 return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
             }
