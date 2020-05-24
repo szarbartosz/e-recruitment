@@ -5,13 +5,14 @@ import static spark.Spark.get;
 public class Main {
     public static void main(String[] args) {
 
-
         post("/students", StudentController.addStudent);
         get("/students", StudentController.getAllStudents);
         get("/autenthicate/:pesel", AuthenticationController.authenticate);
-        post("/exams", ExamController.addExam);
-        get("/fields", FieldController.getAllFields);
         post("/candidates", StudentController.apply);
-        post("/faculty", FacultyController.addFaculty);
+        post("/exams", ExamController.addExam);
+        post("fields", FieldController.addField);
+        get("/fields", FieldController.getAllFields);
+        post("/faculties", FacultyController.addFaculty);
+        get("/faculties", FacultyController.getAllFaculties);
     }
 }

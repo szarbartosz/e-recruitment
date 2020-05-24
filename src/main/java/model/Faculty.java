@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name="Faculties")
 public class Faculty {
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int facultyId;
