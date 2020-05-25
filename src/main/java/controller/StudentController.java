@@ -19,7 +19,7 @@ public class StudentController extends Controller {
         try {
             studentDao.addStudent(student.getFirstName(), student.getLastName(), student.getPesel(),
                     student.getEmail(), student.getAddress().getStreet(), student.getAddress().getBuildingNumber(),
-                    student.getAddress().getZipCode(), student.getAddress().getCity());
+                    student.getAddress().getZipCode(), student.getAddress().getCity(), student.getHashCode());
         } catch (Exception e){
             return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
         }

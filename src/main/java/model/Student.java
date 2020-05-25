@@ -40,6 +40,9 @@ public class Student {
     @Embedded
     private Address address;
 
+    @NotNull
+    private String hashCode;
+
     @OneToMany(mappedBy = "student")
     private Set<Exam> exams = new LinkedHashSet<>();
 
@@ -47,12 +50,13 @@ public class Student {
     private Set<Candidate> candidates = new LinkedHashSet<>();
 
     public Student(String firstName, String lastName, String pesel, String email, String street,
-                   String buildingNumber, String zipCode, String city) {
+                   String buildingNumber, String zipCode, String city, String hashCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
         this.email = email;
         this.address = new Address(street, buildingNumber, zipCode, city);
+        this.hashCode = hashCode;
     }
 
     public void addExam(Exam exam){

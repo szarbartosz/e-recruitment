@@ -11,7 +11,7 @@ public class Main {
 
         post("/students", StudentController.addStudent);
         get("/students", StudentController.getAllStudents);
-        get("/autenthicate/:pesel", AuthenticationController.authenticate);
+        get("/autenthicate", AuthenticationController.authenticate);
         post("/candidates", StudentController.apply);
         post("/exams", ExamController.addExam);
         post("/faculties", FacultyController.addFaculty);
