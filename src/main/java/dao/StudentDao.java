@@ -8,7 +8,6 @@ import model.Field;
 import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -19,23 +18,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StudentDao {
-    private static StudentDao instance;
     private final Pattern emailPattern;
 
-    public static StudentDao getInstance(){
-        if (instance == null){
-            instance = new StudentDao();
-        }
-        return instance;
-    }
-
-    private StudentDao(){
+    public StudentDao(){
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
         this.emailPattern = Pattern.compile(emailRegex);
-        Configuration config = new Configuration();
     }
 
     public void addStudent(String firstName, String secondName, String pesel, String email,

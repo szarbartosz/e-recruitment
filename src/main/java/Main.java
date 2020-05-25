@@ -3,26 +3,29 @@ import com.google.gson.GsonBuilder;
 import controller.*;
 import model.Student;
 
-import static spark.Spark.post;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-
-        post("/students", StudentController.addStudent);
         get("/students", StudentController.getAllStudents);
-        get("/autenthicate", AuthenticationController.authenticate);
-        post("/candidates", StudentController.apply);
+
+        post("/register", AuthenticationController.register);
         post("/exams", ExamController.addExam);
-        post("/faculties", FacultyController.addFaculty);
-        get("/faculties", FacultyController.getAllFaculties);
-        post("fields", FieldController.addField);
-        get("/fields", FieldController.getAllFields);
+        get("/authenticate", AuthenticationController.authenticate);
+
+        post("/candidacies", StudentController.apply);
+
         get("/candidacies/:studentId", StudentController.getAllCandidacies);
 
-//        Student student = new Student("Krzysztof", "Nalepa", "12345678910", "knalepa@gmail.com", "polna", "36", "36-420", "Krakóœ");
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        String json = gson.toJson(student);
-//        System.out.println(json);
+        patch("/candidacies/:id", RecruitmentController.startRecruitment);
+
+        post("/faculties", FacultyController.addFaculty);
+        get("/faculties", FacultyController.getAllFaculties);
+        post("/fields", FieldController.addField);
+        post("/fields/:id", FieldController.addSubject);
+        get("/fields", FieldController.getAllFields);
+
+
+
     }
 }
