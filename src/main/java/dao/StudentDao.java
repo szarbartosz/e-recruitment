@@ -17,17 +17,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StudentDao {
-    private static StudentDao instance;
     private final Pattern emailPattern;
 
-    public static StudentDao getInstance(){
-        if (instance == null){
-            instance = new StudentDao();
-        }
-        return instance;
-    }
-
-    private StudentDao(){
+    public StudentDao(){
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
