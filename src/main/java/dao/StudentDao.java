@@ -7,9 +7,6 @@ import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-
-import javax.management.openmbean.SimpleType;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
 import java.util.Comparator;

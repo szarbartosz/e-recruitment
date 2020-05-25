@@ -1,7 +1,6 @@
 package controller.config;
 
 import com.google.gson.JsonElement;
-import controller.config.Status;
 import lombok.Getter;
 import lombok.Setter;
 
