@@ -10,13 +10,16 @@ public class Main {
     public static void main(String[] args) {
 
         post("/register", AuthenticationController.register);
+        get("/authenticate", AuthenticationController.authenticate);
         get("/students", StudentController.getAllStudents);
-        get("/autenthicate", AuthenticationController.authenticate);
+
         post("/candidates", StudentController.apply);
         post("/exams", ExamController.addExam);
+
         post("/faculties", FacultyController.addFaculty);
         get("/faculties", FacultyController.getAllFaculties);
-        post("fields", FieldController.addField);
+
+        post("/fields", FieldController.addField);
         get("/fields", FieldController.getAllFields);
         get("/candidacies/:studentId", StudentController.getAllCandidacies);
 
