@@ -34,5 +34,4 @@ public class Candidate {
     public Candidate(boolean isAccepted) {
         this.isAccepted = isAccepted;
     }
-
 }

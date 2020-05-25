@@ -27,7 +27,7 @@ public class Student {
 
     @Expose
     @NotNull
-    private String secondName;
+    private String lastName;
 
     @Expose
     @NotNull
@@ -46,10 +46,10 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<Candidate> candidates = new LinkedHashSet<>();
 
-    public Student(String firstName, String secondName, String pesel, String email, String street,
+    public Student(String firstName, String lastName, String pesel, String email, String street,
                    String buildingNumber, String zipCode, String city) {
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
         this.pesel = pesel;
         this.email = email;
         this.address = new Address(street, buildingNumber, zipCode, city);
@@ -64,6 +64,4 @@ public class Student {
         candidate.setStudent(this);
         this.candidates.add(candidate);
     }
-
-
 }
