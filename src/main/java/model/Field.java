@@ -31,6 +31,7 @@ public class Field {
     @NotNull
     private int capacity;
 
+    @Expose
     @ManyToOne
     @JoinColumn(name="FACULTY_FK")
     private Faculty faculty;

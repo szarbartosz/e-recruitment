@@ -94,6 +94,12 @@ public class StudentDao {
                 .filter(exam -> exam.getSubject().equals("Matematyka podstawowa"))
                 .collect(Collectors.toList());
 
+        TypedQuery<Candidate> query4 = session.createQuery("SELECT C From Candidate C WHERE " +
+                "C.student.studentId = :studentId AND C.field.fieldId = :fieldId", Candidate.class);
+        query4.setParameter("studentId", studentId);
+        query4.setParameter("fieldId", fieldId);
+        boolean candidateApplied = (!query4.getResultList().isEmpty());
+
         if (mathExam.size() != 1){
             throw new Exception("Not enough exams");
         }
@@ -102,6 +108,10 @@ public class StudentDao {
             mainExamsPoints = 0.0;
         } else {
             mainExamsPoints = mainExams.get(0).getResult() * 800;
+        }
+
+        if (candidateApplied) {
+            throw new Exception("Student has aready applied for this field");
         }
 
         Candidate candidate = new Candidate(false);
@@ -134,5 +144,15 @@ public class StudentDao {
         Student student = query.getSingleResult();
         session.close();
         return student;
+    }
+
+    public Collection<Candidate> getAllCandidacies(String pesel) {
+        Session session = SessionFactoryDecorator.openSession();
+        TypedQuery<Candidate> query = session.createQuery("SELECT C FROM Candidate C WHERE" +
+                " C.student.pesel = :pesel", Candidate.class);
+        query.setParameter("pesel", pesel);
+        Collection<Candidate> collection = query.getResultList();
+        session.close();
+        return collection;
     }
 }
