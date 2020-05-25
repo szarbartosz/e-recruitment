@@ -37,7 +37,7 @@ public class StudentDao {
     }
 
     public void addStudent(String firstName, String secondName, String pesel, String email,
-                           String street, String buildingNumber, String zipCode, String city) throws Exception {
+                           String street, String buildingNumber, String zipCode, String city, String hashCode) throws Exception {
 
         if (!this.emailPattern.matcher(email).matches()){
             throw new Exception("Incorrect email address");
@@ -47,7 +47,7 @@ public class StudentDao {
             throw new Exception("Incorrect pesel");
         }
 
-        Student student = new Student(firstName, secondName, pesel, email, street, buildingNumber, zipCode, city);
+        Student student = new Student(firstName, secondName, pesel, email, street, buildingNumber, zipCode, city, hashCode);
         Session session = SessionFactoryDecorator.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(student);
@@ -138,12 +138,14 @@ public class StudentDao {
         return collection;
     }
 
-    public Student authenticate(String pesel){
+    public Student authenticate(String login, String hashCode) {
         Session session = SessionFactoryDecorator.openSession();
         TypedQuery<Student> query = session.createQuery("SELECT S FROM Student S WHERE " +
-                "S.pesel = :pesel", Student.class);
-        query.setParameter("pesel", pesel);
+                "S.email = :login and S.hashCode = :hashCode", Student.class);
+        query.setParameter("login", login);
+        query.setParameter("hashCode", hashCode);
         Student student = query.getSingleResult();
+
         session.close();
         return student;
     }

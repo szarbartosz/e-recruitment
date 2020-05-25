@@ -7,15 +7,19 @@ import controller.config.Status;
 import model.Student;
 import spark.Route;
 
+//not really JWT authentication XD
+
 public class AuthenticationController extends Controller{
     public static Route authenticate = (request, response) -> {
         response.type("application/json");
         Student student;
         try {
-            student = studentDao.authenticate(request.params(":pesel"));
-
+            if (request.headers("login") == null || request.headers("hashCode") == null){
+                throw new Exception("Headers incomplete");
+            }
+            student = studentDao.authenticate(request.headers("login"), request.headers("hashCode"));
         } catch (Exception e) {
-            return new Gson().toJson(new StandardResponse(Status.ERROR, "Authentication refused"));
+            return new Gson().toJson(new StandardResponse(Status.ERROR, e.getMessage()));
         }
         return new Gson().toJson(
                 new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
