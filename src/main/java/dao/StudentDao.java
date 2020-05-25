@@ -6,7 +6,6 @@ import model.Field;
 import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -25,7 +24,6 @@ public class StudentDao {
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
         this.emailPattern = Pattern.compile(emailRegex);
-        Configuration config = new Configuration();
     }
 
     public void addStudent(String firstName, String secondName, String pesel, String email,

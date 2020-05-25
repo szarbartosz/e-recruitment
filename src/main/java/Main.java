@@ -8,24 +8,23 @@ import static spark.Spark.get;
 
 public class Main {
     public static void main(String[] args) {
-
-        post("/register", AuthenticationController.register);
-        get("/authenticate", AuthenticationController.authenticate);
         get("/students", StudentController.getAllStudents);
 
-        post("/candidates", StudentController.apply);
+        post("/register", AuthenticationController.register);
         post("/exams", ExamController.addExam);
+        get("/authenticate", AuthenticationController.authenticate);
+
+        post("/candidacies", StudentController.apply);
+
+        get("/candidacies/:studentId", StudentController.getAllCandidacies);
 
         post("/faculties", FacultyController.addFaculty);
         get("/faculties", FacultyController.getAllFaculties);
-
         post("/fields", FieldController.addField);
+        post("/fields/:id", FieldController.addSubject);
         get("/fields", FieldController.getAllFields);
-        get("/candidacies/:studentId", StudentController.getAllCandidacies);
 
-//        Student student = new Student("Krzysztof", "Nalepa", "12345678910", "knalepa@gmail.com", "polna", "36", "36-420", "Krakóœ");
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        String json = gson.toJson(student);
-//        System.out.println(json);
+
+
     }
 }

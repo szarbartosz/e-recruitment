@@ -36,4 +36,16 @@ public class FieldController extends Controller{
                 new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
                         .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection)));
     };
+
+    public static Route addSubject = (request, response) -> {
+        response.type("application/json");
+        JsonObject object = new JsonParser().parse(request.body()).getAsJsonObject();
+        try{
+            universityDao.addMainSubjectToField(Integer.parseInt(request.params(":id")),
+                    object.get("name").getAsString());
+        } catch (Exception e){
+            return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+        }
+        return new Gson().toJson(new StandardResponse(Status.SUCCESS));
+    };
 }
