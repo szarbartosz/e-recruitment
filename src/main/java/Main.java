@@ -18,7 +18,7 @@ public class Main {
         get("/faculties", FacultyController.getAllFaculties);
         post("fields", FieldController.addField);
         get("/fields", FieldController.getAllFields);
-        get("/candidacies/:pesel", StudentController.getAllCandidacies);
+        get("/candidacies/:studentId", StudentController.getAllCandidacies);
 
 //        Student student = new Student("Krzysztof", "Nalepa", "12345678910", "knalepa@gmail.com", "polna", "36", "36-420", "Krakóœ");
 //        Gson gson = new GsonBuilder().setPrettyPrinting().create();

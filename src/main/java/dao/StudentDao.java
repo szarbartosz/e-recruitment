@@ -7,6 +7,8 @@ import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
 import java.util.Comparator;
@@ -146,12 +148,16 @@ public class StudentDao {
         return student;
     }
 
-    public Collection<Candidate> getAllCandidacies(String pesel) {
+    public Collection getAllCandidacies(int studentId) {
         Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Candidate> query = session.createQuery("SELECT C FROM Candidate C WHERE" +
-                " C.student.pesel = :pesel", Candidate.class);
-        query.setParameter("pesel", pesel);
-        Collection<Candidate> collection = query.getResultList();
+        Query query = session.createQuery("" +
+                "SELECT C.candidateId, C.isAccepted, C.pointsNumber, Fa.name, Fi.name, Fi.recruitmentEnded " +
+                "FROM Candidate C " +
+                "JOIN Field Fi ON Fi.fieldId = C.field.fieldId " +
+                "JOIN Faculty Fa ON  Fa.facultyId = Fi.faculty.facultyId " +
+                "WHERE C.student.studentId = :studentId");
+        query.setParameter("studentId", studentId);
+        Collection collection = query.getResultList();
         session.close();
         return collection;
     }

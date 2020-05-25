@@ -54,9 +54,9 @@ public class StudentController extends Controller {
 
     public static Route getAllCandidacies = (request, response) -> {
       response.type("application/json");
-      Collection<Candidate> collection;
+      Collection collection;
       try {
-          collection = studentDao.getAllCandidacies(":pesel");
+          collection = studentDao.getAllCandidacies(Integer.parseInt(request.params(":studentId")));
       } catch (Exception e){
           return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
       }

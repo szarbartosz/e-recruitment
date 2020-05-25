@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name="Candidates")
 public class Candidate {
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int candidateId;
 
+    @Expose
     @NotNull
     private boolean isAccepted;
 
+    @Expose
     private double pointsNumber;
 
     @ManyToOne
