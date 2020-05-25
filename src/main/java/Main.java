@@ -9,7 +9,7 @@ import static spark.Spark.get;
 public class Main {
     public static void main(String[] args) {
 
-        post("/students", StudentController.addStudent);
+        post("/students", AuthenticationController.register);
         get("/students", StudentController.getAllStudents);
         get("/autenthicate", AuthenticationController.authenticate);
         post("/candidates", StudentController.apply);
