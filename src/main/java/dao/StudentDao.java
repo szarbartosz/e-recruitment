@@ -1,5 +1,7 @@
 package dao;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
+import controller.config.CandidateInfo;
 import model.Candidate;
 import model.Exam;
 import model.Field;
@@ -134,6 +136,9 @@ public class StudentDao {
         Session session = SessionFactoryDecorator.openSession();
         TypedQuery<Student> query = session.createQuery("FROM Student", Student.class);
         Collection<Student> collection = query.getResultList();
+//        for (Object s : collection) {
+//            System.out.println(s);
+//        }
         session.close();
         return collection;
     }
@@ -150,17 +155,31 @@ public class StudentDao {
         return student;
     }
 
-    public Collection getAllCandidacies(int studentId) {
+    public Collection getAllCandidacies(int studentId) { //śmiga na dzikim konstruktorze candidateinfo - regular query
         Session session = SessionFactoryDecorator.openSession();
         Query query = session.createQuery("" +
-                "SELECT C.candidateId, C.isAccepted, C.pointsNumber, Fa.name, Fi.name, Fi.recruitmentEnded " +
-                "FROM Candidate C " +
-                "JOIN Field Fi ON Fi.fieldId = C.field.fieldId " +
-                "JOIN Faculty Fa ON  Fa.facultyId = Fi.faculty.facultyId " +
-                "WHERE C.student.studentId = :studentId");
+                "SELECT new CandidateInfo(c, fa, fi) " +
+                "FROM Candidate c " +
+                "JOIN c.field fi " +
+                "JOIN fi.faculty fa " +
+                "WHERE c.student.studentId = :studentId");
         query.setParameter("studentId", studentId);
         Collection collection = query.getResultList();
         session.close();
         return collection;
     }
+
+//    public Collection getAllCandidacies(int studentId) { //opcja tradycyjna
+//        Session session = SessionFactoryDecorator.openSession();
+//        Query query = session.createQuery("" +
+//                "SELECT c.candidateId, c.isAccepted, c.pointsNumber, fa.name, fi.name, fi.recruitmentEnded " +
+//                "FROM Candidate c " +
+//                "JOIN c.field fi " +
+//                "JOIN fi.faculty fa " +
+//                "WHERE c.student.studentId = :studentId");
+//        query.setParameter("studentId", studentId);
+//        Collection collection = query.getResultList();
+//        session.close();
+//        return collection;
+//    }
 }

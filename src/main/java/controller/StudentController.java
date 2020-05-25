@@ -1,9 +1,6 @@
 package controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import controller.config.StandardResponse;
 import controller.config.Status;
 import model.Candidate;
@@ -11,6 +8,7 @@ import model.Student;
 import spark.Route;
 
 import java.util.Collection;
+import java.util.List;
 
 public class StudentController extends Controller {
     public static Route addStudent = (request, response) -> {
