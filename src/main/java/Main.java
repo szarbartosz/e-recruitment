@@ -3,8 +3,7 @@ import com.google.gson.GsonBuilder;
 import controller.*;
 import model.Student;
 
-import static spark.Spark.post;
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +16,8 @@ public class Main {
         post("/candidacies", StudentController.apply);
 
         get("/candidacies/:studentId", StudentController.getAllCandidacies);
+
+        patch("/candidacies/:id", RecruitmentController.startRecruitment);
 
         post("/faculties", FacultyController.addFaculty);
         get("/faculties", FacultyController.getAllFaculties);

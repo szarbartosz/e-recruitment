@@ -52,6 +52,7 @@ public class UniversityDao {
         TypedQuery<Field> queryField = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
         queryField.setParameter("fieldId", fieldId);
         Field field = queryField.getSingleResult();
+        field.setRecruitmentEnded(true);
         TypedQuery<Candidate> queryCandidates = session.createQuery("SELECT C FROM Candidate C WHERE C.field = :field", Candidate.class);
         queryCandidates.setParameter("field", field);
         List<Candidate> candidates = queryCandidates.getResultStream().sorted(Comparator.comparing(Candidate::getPointsNumber).reversed()).collect(Collectors.toList());
