@@ -147,7 +147,18 @@ public void addMainSubjectToField(int fieldId, String subjectName) {
 }
 ```
 
-## Uruchomienie projektu z wykorzystaniem Dockera :whale:
+## Uruchomienie projektu :elephant:
+
+Aby uruchomić projekt wystarczy odpowiednio skonfigurować połączenie ze stworzoną uprzenio bazą danych w pliku hibernate.cfg.xml. Przykładowa konfiguracja połączenia z bazą danych o nazwie DB dostępną pod adresem http://localhost:5432/DB
+
+```
+<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/DB</property>
+<property name="hibernate.connection.username">postgres</property>
+<property name="hibernate.connection.password">password</property>
+``` 
+
+
 
 ## Kontrybutorzy :poland: :onion:
 <table>
