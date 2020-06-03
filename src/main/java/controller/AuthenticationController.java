@@ -41,5 +41,4 @@ public class AuthenticationController extends Controller{
         }
         return new Gson().toJson(new StandardResponse(Status.SUCCESS));
     };
-
 }

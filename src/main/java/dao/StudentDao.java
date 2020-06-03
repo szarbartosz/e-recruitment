@@ -1,7 +1,5 @@
 package dao;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import controller.config.CandidateInfo;
 import model.Candidate;
 import model.Exam;
 import model.Field;
@@ -9,7 +7,6 @@ import model.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Collection;
 import java.util.Comparator;
