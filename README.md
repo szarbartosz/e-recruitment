@@ -38,7 +38,6 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
       ├── Faculty.java
       ├── Field.java
       └── Student.java
-  
 ```
 ## Kontrybutorzy :poland: :onion:
 <table>
