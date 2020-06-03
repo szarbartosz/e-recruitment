@@ -22,8 +22,5 @@ public class Main {
         post("/fields", FieldController.addField);
         post("/fields/:id", FieldController.addSubject);
         get("/fields", FieldController.getAllFields);
-
-
-
     }
 }

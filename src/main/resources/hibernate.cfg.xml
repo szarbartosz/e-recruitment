@@ -27,7 +27,6 @@
         <mapping class="model.Field"/>
         <mapping class="model.Exam"/>
         <mapping class="model.Candidate"/>
-        <mapping class="controller.config.CandidateInfo"/>
 
 
     </session-factory>
