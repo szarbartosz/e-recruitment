@@ -15,8 +15,6 @@ public class Main {
 
         post("/candidacies", StudentController.apply);
 
-        get("/candidacies/:studentId", StudentController.getAllCandidacies);
-
         patch("/candidacies/:id", RecruitmentController.startRecruitment);
 
         post("/faculties", FacultyController.addFaculty);

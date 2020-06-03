@@ -36,19 +36,5 @@ public class StudentController extends Controller {
         }
         return new Gson().toJson(new StandardResponse(Status.SUCCESS));
     };
-
-    public static Route getAllCandidacies = (request, response) -> {
-      response.type("application/json");
-      Collection collection;
-      try {
-          collection = studentDao.getAllCandidacies(Integer.parseInt(request.params(":studentId")));
-      } catch (Exception e){
-          return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
-      }
-        return new Gson().toJson(
-                new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
-                        .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
-        );
-    };
 }
 
