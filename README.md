@@ -147,6 +147,8 @@ public void addMainSubjectToField(int fieldId, String subjectName) {
 }
 ```
 
+## Uruchomienie projektu z wykorzystaniem Dockera :whale:
+
 ## Kontrybutorzy :poland: :onion:
 <table>
   <tr>
