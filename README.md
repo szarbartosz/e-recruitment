@@ -39,6 +39,114 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
       ├── Field.java
       └── Student.java
 ```
+## Opis funkcjonalności
+
+Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów magisterskich. Podczas rekrutacji pod uwagę brane są wyniki egzaminów wstępnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
+
+### Strona studenta - ciekawsze funkcjonalności
+#### Rejestracja studenta w bazie danych:
+
+```java
+public StudentDao(){
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+            "[a-zA-Z0-9_+&*-]+)*@" +
+            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+            "A-Z]{2,7}$";
+    this.emailPattern = Pattern.compile(emailRegex);
+}
+
+public void addStudent(String firstName, String secondName, String pesel, String email,
+                       String street, String buildingNumber, String zipCode, String city, String hashCode) throws Exception {
+
+    if (!this.emailPattern.matcher(email).matches()){
+        throw new Exception("Incorrect email address");
+    }
+
+    if (pesel.length() != 11){
+        throw new Exception("Incorrect pesel");
+    }
+
+    Student student = new Student(firstName, secondName, pesel, email, street, buildingNumber, zipCode, city, hashCode);
+    Session session = SessionFactoryDecorator.openSession();
+    Transaction transaction = session.beginTransaction();
+    session.save(student);
+    transaction.commit();
+    session.close();
+}
+```    
+
+#### Wprowadzenie wyników egzaminu wstępnego:
+
+```java
+public void addExam(int studentId, String subject, double result) throws Exception {
+    if (result < 0.0 || result > 1.0){
+        throw new Exception("Incorrect exam result");
+    }
+
+    Session session = SessionFactoryDecorator.openSession();
+    TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
+    query.setParameter("studentId", studentId);
+    Student student = query.getSingleResult();
+    Exam exam = new Exam(subject, result);
+    student.addExam(exam);
+    Transaction transaction = session.beginTransaction();
+    session.save(exam);
+    session.update(student);
+    transaction.commit();
+    session.close();
+}
+```
+
+### Strona uczelni - ciekawsze funkcjonalności
+#### Rejestracja nowego wydziału:
+
+```java
+public void addFaculty(String name) {
+    Faculty faculty = new Faculty(name);
+    Session session = SessionFactoryDecorator.openSession();
+    Transaction transaction = session.beginTransaction();
+    session.save(faculty);
+    transaction.commit();
+    session.close();
+}
+```
+
+#### Rejestracja nowego kierunku studiów:
+
+```java
+public void addField(int facultyId, String name, int capacity) throws Exception {
+    if(capacity <= 0) {
+        throw new Exception("Incorrect capacity");
+    }
+    Session session = SessionFactoryDecorator.openSession();
+    TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
+    query.setParameter("facultyId", facultyId);
+    Faculty faculty = query.getSingleResult();
+    Field field = new Field(name, capacity);
+    faculty.addField(field);
+    Transaction transaction = session.beginTransaction();
+    session.save(field);
+    transaction.commit();
+    session.close();
+}
+```
+
+#### Przypisanie przedmiotu branego pod uwagę podczas rekrutacji do danego wydziału:
+
+```java
+public void addMainSubjectToField(int fieldId, String subjectName) {
+    Session session = SessionFactoryDecorator.openSession();
+    TypedQuery<Field> query = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
+    query.setParameter("fieldId", fieldId);
+    Field field = query.getSingleResult();
+    field.addMainSubject(subjectName);
+    Transaction transaction = session.beginTransaction();
+    session.update(field);
+    transaction.commit();
+    session.close();
+}
+```
+
 ## Kontrybutorzy :poland: :onion:
 <table>
   <tr>
