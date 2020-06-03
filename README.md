@@ -13,7 +13,33 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
 
 ## Struktura projektu
-
+```
+  .
+  ├── controller                              # Klasy odpowiadające za REST API
+  │   ├── AuthenticationController.java
+  │   ├── config                              # Konfiguracja zwracanych JSONów
+  │   │   ├── StandardResponse.java
+  │   │   └── Status.java
+  │   ├── Controller.java
+  │   ├── ExamController.java
+  │   ├── FacultyController.java
+  │   ├── FieldController.java
+  │   ├── RecruitmentController.java
+  │   └── StudentController.java
+  ├── dao                                     # Metody odpowiedzialne za komunikację z bazą danych
+  │   ├── SessionFactoryDecorator.java        
+  │   ├── StudentDao.java                     # Metody po stronie aplikanta
+  │   └── UniversityDao.java                  # Metody po stronie uczelni
+  ├── Main.java
+  └── model                                   # Model danych
+      ├── Address.java
+      ├── Candidate.java
+      ├── Exam.java
+      ├── Faculty.java
+      ├── Field.java
+      └── Student.java
+  
+```
 ## Kontrybutorzy :poland: :onion:
 <table>
   <tr>
@@ -23,31 +49,4 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
   </tr>
 </table>
 
-## Struktura projektu
-```
-  .
-  ├── controller
-  │   ├── AuthenticationController.java
-  │   ├── config
-  │   │   ├── StandardResponse.java
-  │   │   └── Status.java
-  │   ├── Controller.java
-  │   ├── ExamController.java
-  │   ├── FacultyController.java
-  │   ├── FieldController.java
-  │   ├── RecruitmentController.java
-  │   └── StudentController.java
-  ├── dao
-  │   ├── SessionFactoryDecorator.java
-  │   ├── StudentDao.java
-  │   └── UniversityDao.java
-  ├── Main.java
-  └── model
-      ├── Address.java
-      ├── Candidate.java
-      ├── Exam.java
-      ├── Faculty.java
-      ├── Field.java
-      └── Student.java
-  
-```
+
