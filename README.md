@@ -22,3 +22,32 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
     </td>
   </tr>
 </table>
+
+## Struktura projektu
+```
+  .
+  ├── controller
+  │   ├── AuthenticationController.java
+  │   ├── config
+  │   │   ├── StandardResponse.java
+  │   │   └── Status.java
+  │   ├── Controller.java
+  │   ├── ExamController.java
+  │   ├── FacultyController.java
+  │   ├── FieldController.java
+  │   ├── RecruitmentController.java
+  │   └── StudentController.java
+  ├── dao
+  │   ├── SessionFactoryDecorator.java
+  │   ├── StudentDao.java
+  │   └── UniversityDao.java
+  ├── Main.java
+  └── model
+      ├── Address.java
+      ├── Candidate.java
+      ├── Exam.java
+      ├── Faculty.java
+      ├── Field.java
+      └── Student.java
+  
+```
