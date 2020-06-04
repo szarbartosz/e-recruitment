@@ -50,9 +50,7 @@ public class StudentDao {
         }
 
         Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
-        query.setParameter("studentId", studentId);
-        Student student = query.getSingleResult();
+        Student student = session.get(Student.class, studentId);
         Exam exam = new Exam(subject, result);
         student.addExam(exam);
         Transaction transaction = session.beginTransaction();
@@ -65,13 +63,9 @@ public class StudentDao {
     public void studentApply(int studentId, int fieldId) throws Exception{
         Session session = SessionFactoryDecorator.openSession();
 
-        TypedQuery<Student> query1 = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class);
-        query1.setParameter("studentId", studentId);
-        Student student = query1.getSingleResult();
+        Student student = session.get(Student.class, studentId);
 
-        TypedQuery<Field> query2 = session.createQuery("SELECT F From Field F WHERE F.fieldId = :fieldId",Field.class);
-        query2.setParameter("fieldId", fieldId);
-        Field field = query2.getSingleResult();
+        Field field = session.get(Field.class, fieldId);
 
         TypedQuery<Exam> query3 = session.createQuery("SELECT E From Exam E WHERE E.student = :student", Exam.class);
         query3.setParameter("student", student);
