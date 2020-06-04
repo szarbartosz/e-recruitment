@@ -8,8 +8,7 @@
 [![Gson badge](https://img.shields.io/badge/Gson-2.8.0-yellowgreen)](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.0)
 
 ## Krótki opis
-Backendowy komponent obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia I stopnia, napisany w Javie przy użyciu Hibernate. Użyta baza danych to PostgreSQL
-
+Backendowy komponent obsługujący bazę danych PostgreSQL do zarządzania procesem e-rekrutacji na studia I stopnia, zrealizowany w Javie przy użyciu Hibernate.
 ## Diagram bazy danych
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
 
