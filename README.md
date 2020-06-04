@@ -49,27 +49,27 @@ Wykorzystany przez nas framework Spark domyślnie uruchamia serwer na porcie 456
 
 ### get
 ```java
-get("/students", StudentController.getAllStudents);           #pobranie listy zarejestrowanych aplikantóœ
-get("/authenticate", AuthenticationController.authenticate);  #autentykacja aplikanta
-get("/faculties", FacultyController.getAllFaculties);         #pobranie listy wydziałów
-get("/fields", FieldController.getAllFields);                 #pobranie listy kierunków studiów
+get("/students", StudentController.getAllStudents);           //pobranie listy zarejestrowanych aplikantóœ
+get("/authenticate", AuthenticationController.authenticate);  //autentykacja aplikanta
+get("/faculties", FacultyController.getAllFaculties);         //pobranie listy wydziałów
+get("/fields", FieldController.getAllFields);                 //pobranie listy kierunków studiów
 ```
 
 
 ### post
 ```java
-post("/register", AuthenticationController.register);     #rejestracja aplikanta
-post("/exams", ExamController.addExam);                   #przypisanie wyników egzaminu do aplikanta
-post("/candidacies", StudentController.apply);            #aplikacja na dany kierunek studiów
-post("/faculties", FacultyController.addFaculty);         #dodanie nowego wydziału
-post("/fields", FieldController.addField);                #dodanie nowego kierunku studiów
-post("/fields/:id", FieldController.addSubject);          #dodanie nowego przedmiotu branego pod uwagę podczas rekrutacji
+post("/register", AuthenticationController.register);     //rejestracja aplikanta
+post("/exams", ExamController.addExam);                   //przypisanie wyników egzaminu do aplikanta
+post("/candidacies", StudentController.apply);            //aplikacja na dany kierunek studiów
+post("/faculties", FacultyController.addFaculty);         //dodanie nowego wydziału
+post("/fields", FieldController.addField);                //dodanie nowego kierunku studiów
+post("/fields/:id", FieldController.addSubject);          //dodanie nowego przedmiotu branego pod uwagę podczas rekrutacji
 ```
 
 
 ### patch
 ```java
-patch("/candidacies/:id", RecruitmentController.startRecruitment); #kwalifikacja aplkantów z najlepszymi wynikami egzaminów 
+patch("/candidacies/:id", RecruitmentController.startRecruitment); //kwalifikacja aplkantów z najlepszymi wynikami egzaminów 
 ```
 
 Wszystkie endpointy są obsługiwane przez metody zaimplementowane w folderze ocntroller  (../java/controller/)
@@ -172,6 +172,32 @@ public void addField(int facultyId, String name, int capacity) throws Exception 
     session.close();
 }
 ```
+
+### Wyjaśnienie:
+- wykonujemy zapytanie aby uzyskać dostęp do obiektu faculty o zadanym facultyId
+- następnie tworzymy nowy obiekt field zgodnie z zadanymi parametrami
+- kolejnym etapem jest wykonanie funkcji addField znajdującej się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
+- następnie stworzone obiekty są mapowane na relacje w bazie danych
+
+```java
+// set kierunków studiów oraz metoda addField w klasie Faculty:
+@OneToMany(mappedBy = "faculty")
+private Set<Field> fields = new LinkedHashSet<>();
+    
+public void addField(Field field){
+    field.setFaculty(this);
+    this.fields.add(field);
+}
+```
+
+```java
+// pole faculty w klsaie Field
+@Expose
+@ManyToOne
+@JoinColumn(name="FACULTY_FK")
+private Faculty faculty;
+```
+
 
 #### Przypisanie przedmiotu branego pod uwagę podczas rekrutacji do danego wydziału:
 
