@@ -125,9 +125,7 @@ public void addExam(int studentId, String subject, double result) throws Excepti
     }
 
     Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
-    query.setParameter("studentId", studentId);
-    Student student = query.getSingleResult();
+    Student student = session.get(Student.class, studentId);
     Exam exam = new Exam(subject, result);
     student.addExam(exam);
     Transaction transaction = session.beginTransaction();
