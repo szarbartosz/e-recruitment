@@ -155,28 +155,27 @@ public void addFaculty(String name) {
 #### Rejestracja nowego kierunku studiów:
 
 ```java
-public void addField(int facultyId, String name, int capacity) throws Exception {
-    if(capacity <= 0) {
-        throw new Exception("Incorrect capacity");
+    public void addField(int facultyId, String name, int capacity) throws Exception {
+        if(capacity <= 0) {
+            throw new Exception("Incorrect capacity");
+        }
+        Session session = SessionFactoryDecorator.openSession();
+        Faculty faculty = session.load(Faculty.class, facultyId);
+        Field field = new Field(name, capacity);
+        faculty.addField(field);
+        Transaction transaction = session.beginTransaction();
+        session.save(field);
+        transaction.commit();
+        session.close();
     }
-    Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
-    query.setParameter("facultyId", facultyId);
-    Faculty faculty = query.getSingleResult();
-    Field field = new Field(name, capacity);
-    faculty.addField(field);
-    Transaction transaction = session.beginTransaction();
-    session.save(field);
-    transaction.commit();
-    session.close();
 }
 ```
 
-### Wyjaśnienie:
-- wykonujemy zapytanie aby uzyskać dostęp do obiektu faculty o zadanym facultyId w celu sprawdzenia czy dany wydział istnieje oraz aby móc wykonać mapowanie
-- następnie tworzymy nowy obiekt field zgodnie z zadanymi parametrami
-- w kolejnym etapie wykonanujemy funkcję addField znajdującą się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
-- na koniec stworzone obiekty są mapowane na relacje w bazie danych
+##### Wyjaśnienie:
+- Ładujemy obiekt faculty aby móc wykonać później odpowiednie mapowanie.
+- Następnie tworzymy nowy obiekt field zgodnie z zadanymi parametrami
+- W kolejnym etapie wykonanujemy funkcję addField znajdującą się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
+- Na koniec stworzony obiekt jest mapowany do bazy danych z opowiednim kluczem obcym.
 
 ```java
 // set kierunków studiów oraz metoda addField w klasie Faculty:
@@ -201,16 +200,15 @@ private Faculty faculty;
 #### Przypisanie przedmiotu branego pod uwagę podczas rekrutacji do danego wydziału:
 
 ```java
-public void addMainSubjectToField(int fieldId, String subjectName) {
-    Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Field> query = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
-    query.setParameter("fieldId", fieldId);
-    Field field = query.getSingleResult();
-    field.addMainSubject(subjectName);
-    Transaction transaction = session.beginTransaction();
-    session.update(field);
-    transaction.commit();
-    session.close();
+    public void addMainSubjectToField(int fieldId, String subjectName) {
+        Session session = SessionFactoryDecorator.openSession();
+        Field field = session.get(Field.class, fieldId);
+        field.addMainSubject(subjectName);
+        Transaction transaction = session.beginTransaction();
+        session.update(field);
+        transaction.commit();
+        session.close();
+    }
 }
 ```
 
