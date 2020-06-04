@@ -44,7 +44,8 @@ Backendowy komponent obsługujący bazę danych do zarządzania procesem e-rekru
 
 Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów I stopnia. Podczas rekrutacji pod uwagę brane są wyniki egzaminów maturalnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
 
-## Obsługiwane endpointy
+## Obsługiwane endpointy (../java/main)
+Wykorzystany przez nas framework Spark domyślnie uruchamia serwer na porcie 4567.
 
 ### get
 ```java
@@ -92,7 +93,7 @@ public static Route getAllStudents = (request, response) -> {
 ```
 
 
-### Strona studenta - ciekawsze funkcjonalności ../java/dao/StudentDao
+### Strona studenta - ciekawsze funkcjonalności (../java/dao/StudentDao)
 #### Rejestracja studenta w bazie danych: 
 
 ```java
@@ -138,7 +139,7 @@ public void addExam(int studentId, String subject, double result) throws Excepti
 }
 ```
 
-### Strona uczelni - ciekawsze funkcjonalności  ../java/dao/UniversityDao
+### Strona uczelni - ciekawsze funkcjonalności  (../java/dao/UniversityDao)
 #### Rejestracja nowego wydziału:
 
 ```java
