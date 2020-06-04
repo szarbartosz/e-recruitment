@@ -3,7 +3,6 @@ package controller;
 import com.google.gson.Gson;
 import controller.config.StandardResponse;
 import controller.config.Status;
-import model.Faculty;
 import spark.Route;
 
 public class RecruitmentController extends Controller {
