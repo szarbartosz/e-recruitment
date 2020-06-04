@@ -49,14 +49,6 @@ Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studi
 #### Rejestracja studenta w bazie danych:
 
 ```java
-public StudentDao(){
-    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-            "[a-zA-Z0-9_+&*-]+)*@" +
-            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-            "A-Z]{2,7}$";
-    this.emailPattern = Pattern.compile(emailRegex);
-}
-
 public void addStudent(String firstName, String secondName, String pesel, String email,
                        String street, String buildingNumber, String zipCode, String city, String hashCode) throws Exception {
 
