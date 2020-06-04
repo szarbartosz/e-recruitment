@@ -9,7 +9,7 @@
 
 ## Krótki opis
 
-Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia magisterskie.
+Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia I stopnia.
 
 ## Diagram bazy danych
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
@@ -43,7 +43,7 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
 ```
 ## Opis funkcjonalności
 
-Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów magisterskich. Podczas rekrutacji pod uwagę brane są wyniki egzaminów wstępnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
+Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów I stopnia. Podczas rekrutacji pod uwagę brane są wyniki egzaminów maturalnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
 
 ### Strona studenta - ciekawsze funkcjonalności
 #### Rejestracja studenta w bazie danych:
