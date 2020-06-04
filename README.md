@@ -8,8 +8,7 @@
 [![Gson badge](https://img.shields.io/badge/Gson-2.8.0-yellowgreen)](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.0)
 
 ## Krótki opis
-
-Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia I stopnia.
+Backendowy komponent obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia I stopnia.
 
 ## Diagram bazy danych
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
@@ -44,6 +43,54 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
 ## Opis funkcjonalności
 
 Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów I stopnia. Podczas rekrutacji pod uwagę brane są wyniki egzaminów maturalnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
+
+## Obsługiwane endpointy
+
+### get
+```java
+get("/students", StudentController.getAllStudents);           #pobranie listy zarejestrowanych aplikantóœ
+get("/authenticate", AuthenticationController.authenticate);  #autentykacja aplikanta
+get("/faculties", FacultyController.getAllFaculties);         #pobranie listy wydziałów
+get("/fields", FieldController.getAllFields);                 #pobranie listy kierunków studiów
+```
+
+
+### post
+```java
+post("/register", AuthenticationController.register);     #rejestracja aplikanta
+post("/exams", ExamController.addExam);                   #przypisanie wyników egzaminu do aplikanta
+post("/candidacies", StudentController.apply);            #aplikacja na dany kierunek studiów
+post("/faculties", FacultyController.addFaculty);         #dodanie nowego wydziału
+post("/fields", FieldController.addField);                #dodanie nowego kierunku studiów
+post("/fields/:id", FieldController.addSubject);          #dodanie nowego przedmiotu branego pod uwagę podczas rekrutacji
+```
+
+
+### patch
+```java
+patch("/candidacies/:id", RecruitmentController.startRecruitment); #kwalifikacja aplkantów z najlepszymi wynikami egzaminów 
+```
+
+Wszystkie endpointy są obsługiwane przez metody zaimplementowane w folderze ocntroller  (../java/controller/)
+
+#### Przykładowa obsługa rządania GET zwracająca wszystkich zarejestrowanych w bazie aplikantów (../java/controller/StudentController)
+
+```java
+public static Route getAllStudents = (request, response) -> {
+    response.type("application/json");
+    Collection<Student> collection;
+    try {
+        collection = studentDao.getAllStudents();
+    } catch (Exception e){
+        return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+    }
+    return new Gson().toJson(
+            new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
+    );
+};
+```
+
 
 ### Strona studenta - ciekawsze funkcjonalności ../java/dao/StudentDao
 #### Rejestracja studenta w bazie danych: 
