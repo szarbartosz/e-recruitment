@@ -1,7 +1,6 @@
 package dao;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
-import controller.config.CandidateInfo;
 import model.Candidate;
 import model.Exam;
 import model.Field;

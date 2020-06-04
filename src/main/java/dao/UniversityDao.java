@@ -24,9 +24,7 @@ public class UniversityDao {
             throw new Exception("Incorrect capacity");
         }
         Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
-        query.setParameter("facultyId", facultyId);
-        Faculty faculty = query.getSingleResult();
+        Faculty faculty = session.load(Faculty.class, facultyId);
         Field field = new Field(name, capacity);
         faculty.addField(field);
         Transaction transaction = session.beginTransaction();
@@ -37,9 +35,7 @@ public class UniversityDao {
 
     public void addMainSubjectToField(int fieldId, String subjectName) {
         Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Field> query = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
-        query.setParameter("fieldId", fieldId);
-        Field field = query.getSingleResult();
+        Field field = session.get(Field.class, fieldId);
         field.addMainSubject(subjectName);
         Transaction transaction = session.beginTransaction();
         session.update(field);
@@ -49,9 +45,7 @@ public class UniversityDao {
 
     public void markAccepted(int fieldId) {
         Session session = SessionFactoryDecorator.openSession();
-        TypedQuery<Field> queryField = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
-        queryField.setParameter("fieldId", fieldId);
-        Field field = queryField.getSingleResult();
+        Field field = session.get(Field.class, fieldId);
         field.setRecruitmentEnded(true);
         TypedQuery<Candidate> queryCandidates = session.createQuery("SELECT C FROM Candidate C WHERE C.field = :field", Candidate.class);
         queryCandidates.setParameter("field", field);
