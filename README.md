@@ -45,8 +45,8 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
 
 Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów I stopnia. Podczas rekrutacji pod uwagę brane są wyniki egzaminów maturalnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
 
-### Strona studenta - ciekawsze funkcjonalności
-#### Rejestracja studenta w bazie danych:
+### Strona studenta - ciekawsze funkcjonalności ../java/dao/StudentDao
+#### Rejestracja studenta w bazie danych: 
 
 ```java
 public void addStudent(String firstName, String secondName, String pesel, String email,
@@ -91,7 +91,7 @@ public void addExam(int studentId, String subject, double result) throws Excepti
 }
 ```
 
-### Strona uczelni - ciekawsze funkcjonalności
+### Strona uczelni - ciekawsze funkcjonalności  ../java/dao/UniversityDao
 #### Rejestracja nowego wydziału:
 
 ```java
