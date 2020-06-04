@@ -4,6 +4,8 @@
 [![Lombok badge](https://img.shields.io/badge/Project_Lombok-1.18.12-green)](https://mvnrepository.com/artifact/org.projectlombok/lombok)
 [![Hibernate badge](https://img.shields.io/badge/Hibernate-5.4.13-yellow)](https://mvnrepository.com/artifact/org.hibernate/hibernate-core)
 [![PostgreSql badge](https://img.shields.io/badge/PostgreSQL-42.2.12-%2346A9EE)](https://mvnrepository.com/artifact/org.postgresql/postgresql)
+[![Spark badge](https://img.shields.io/badge/Spark-2.5.4-blueviolet)](https://mvnrepository.com/artifact/com.sparkjava/spark-core/2.5.4)
+[![Gson badge](https://img.shields.io/badge/Gson-2.8.0-yellowgreen)](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.0)
 
 ## Krótki opis
 
@@ -151,7 +153,7 @@ public void addMainSubjectToField(int fieldId, String subjectName) {
 
 Aby uruchomić projekt wystarczy odpowiednio skonfigurować połączenie ze stworzoną uprzenio bazą danych w pliku hibernate.cfg.xml. Przykładowa konfiguracja połączenia z bazą danych o nazwie DB dostępną pod adresem http://localhost:5432/DB
 
-```
+```XML
 <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/DB</property>
 <property name="hibernate.connection.username">postgres</property>
