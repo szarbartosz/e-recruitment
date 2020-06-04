@@ -45,7 +45,9 @@ public class UniversityDao {
 
     public void markAccepted(int fieldId) {
         Session session = SessionFactoryDecorator.openSession();
-        Field field = session.get(Field.class, fieldId);
+        TypedQuery<Field> queryField = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
+        queryField.setParameter("fieldId", fieldId);
+        Field field = queryField.getSingleResult();
         field.setRecruitmentEnded(true);
         TypedQuery<Candidate> queryCandidates = session.createQuery("SELECT C FROM Candidate C WHERE C.field = :field", Candidate.class);
         queryCandidates.setParameter("field", field);
