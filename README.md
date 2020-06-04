@@ -174,10 +174,10 @@ public void addField(int facultyId, String name, int capacity) throws Exception 
 ```
 
 ### Wyjaśnienie:
-- wykonujemy zapytanie aby uzyskać dostęp do obiektu faculty o zadanym facultyId
+- wykonujemy zapytanie aby uzyskać dostęp do obiektu faculty o zadanym facultyId w celu sprawdzenia czy dany wydział istnieje oraz aby móc wykonać mapowanie
 - następnie tworzymy nowy obiekt field zgodnie z zadanymi parametrami
-- kolejnym etapem jest wykonanie funkcji addField znajdującej się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
-- następnie stworzone obiekty są mapowane na relacje w bazie danych
+- w kolejnym etapie wykonanujemy funkcję addField znajdującą się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
+- na koniec stworzone obiekty są mapowane na relacje w bazie danych
 
 ```java
 // set kierunków studiów oraz metoda addField w klasie Faculty:
