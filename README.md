@@ -4,11 +4,11 @@
 [![Lombok badge](https://img.shields.io/badge/Project_Lombok-1.18.12-green)](https://mvnrepository.com/artifact/org.projectlombok/lombok)
 [![Hibernate badge](https://img.shields.io/badge/Hibernate-5.4.13-yellow)](https://mvnrepository.com/artifact/org.hibernate/hibernate-core)
 [![PostgreSql badge](https://img.shields.io/badge/PostgreSQL-42.2.12-%2346A9EE)](https://mvnrepository.com/artifact/org.postgresql/postgresql)
+[![Spark badge](https://img.shields.io/badge/Spark-2.5.4-blueviolet)](https://mvnrepository.com/artifact/com.sparkjava/spark-core/2.5.4)
+[![Gson badge](https://img.shields.io/badge/Gson-2.8.0-yellowgreen)](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.0)
 
 ## Krótki opis
-
-Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studia magisterskie.
-
+Backendowy komponent obsługujący bazę danych PostgreSQL do zarządzania procesem e-rekrutacji na studia I stopnia, zrealizowany w Javie przy użyciu Hibernate.
 ## Diagram bazy danych
 ![diagram](https://github.com/szarbartosz/eRecruitment/blob/master/diagram.png)
 
@@ -41,20 +41,61 @@ Serwer obsługujący bazę danych do zarządzania procesem e-rekrutacji na studi
 ```
 ## Opis funkcjonalności
 
-Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów magisterskich. Podczas rekrutacji pod uwagę brane są wyniki egzaminów wstępnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
+Projekt realizuje jednoetapową rekrutację studentów na wybrane kierunki studiów I stopnia. Podczas rekrutacji pod uwagę brane są wyniki egzaminów maturalnych, które uprzednio student wprowadza do systemu. Zarejestrowani studenci mogą aplikować na różne kierunki. Uczelnia, jako główny zarządca systemu, manipuluje dostępnymi wydziałami i kierunkami studiów.
 
-### Strona studenta - ciekawsze funkcjonalności
-#### Rejestracja studenta w bazie danych:
+## Obsługiwane endpointy (../java/main)
+Wykorzystany przez nas framework Spark domyślnie uruchamia serwer na porcie 4567.
+
+### get
+```java
+get("/students", StudentController.getAllStudents);           //pobranie listy zarejestrowanych aplikantóœ
+get("/authenticate", AuthenticationController.authenticate);  //autentykacja aplikanta
+get("/faculties", FacultyController.getAllFaculties);         //pobranie listy wydziałów
+get("/fields", FieldController.getAllFields);                 //pobranie listy kierunków studiów
+```
+
+
+### post
+```java
+post("/register", AuthenticationController.register);     //rejestracja aplikanta
+post("/exams", ExamController.addExam);                   //przypisanie wyników egzaminu do aplikanta
+post("/candidacies", StudentController.apply);            //aplikacja na dany kierunek studiów
+post("/faculties", FacultyController.addFaculty);         //dodanie nowego wydziału
+post("/fields", FieldController.addField);                //dodanie nowego kierunku studiów
+post("/fields/:id", FieldController.addSubject);          //dodanie nowego przedmiotu branego pod uwagę podczas rekrutacji
+```
+
+
+### patch
+```java
+patch("/candidacies/:id", RecruitmentController.startRecruitment); //kwalifikacja aplkantów z najlepszymi wynikami egzaminów 
+```
+
+Wszystkie endpointy są obsługiwane przez metody zaimplementowane w folderze ocntroller  (../java/controller/)
+
+#### Przykładowa obsługa rządania GET zwracająca wszystkich zarejestrowanych w bazie aplikantów (../java/controller/StudentController)
 
 ```java
-public StudentDao(){
-    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-            "[a-zA-Z0-9_+&*-]+)*@" +
-            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-            "A-Z]{2,7}$";
-    this.emailPattern = Pattern.compile(emailRegex);
-}
+public static Route getAllStudents = (request, response) -> {
+    response.type("application/json");
+    Collection<Student> collection;
+    try {
+        collection = studentDao.getAllStudents();
+    } catch (Exception e){
+        return new Gson().toJson(new StandardResponse(Status.ERROR, e.toString()));
+    }
+    return new Gson().toJson(
+            new StandardResponse(Status.SUCCESS, "ok", new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation().create().toJsonTree(collection))
+    );
+};
+```
 
+
+### Strona studenta - ciekawsze funkcjonalności (../java/dao/StudentDao)
+#### Rejestracja studenta w bazie danych: 
+
+```java
 public void addStudent(String firstName, String secondName, String pesel, String email,
                        String street, String buildingNumber, String zipCode, String city, String hashCode) throws Exception {
 
@@ -84,9 +125,7 @@ public void addExam(int studentId, String subject, double result) throws Excepti
     }
 
     Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Student> query = session.createQuery("SELECT S From Student S WHERE S.studentId = :studentId", Student.class );
-    query.setParameter("studentId", studentId);
-    Student student = query.getSingleResult();
+    Student student = session.get(Student.class, studentId);
     Exam exam = new Exam(subject, result);
     student.addExam(exam);
     Transaction transaction = session.beginTransaction();
@@ -97,7 +136,7 @@ public void addExam(int studentId, String subject, double result) throws Excepti
 }
 ```
 
-### Strona uczelni - ciekawsze funkcjonalności
+### Strona uczelni - ciekawsze funkcjonalności  (../java/dao/UniversityDao)
 #### Rejestracja nowego wydziału:
 
 ```java
@@ -114,36 +153,60 @@ public void addFaculty(String name) {
 #### Rejestracja nowego kierunku studiów:
 
 ```java
-public void addField(int facultyId, String name, int capacity) throws Exception {
-    if(capacity <= 0) {
-        throw new Exception("Incorrect capacity");
+    public void addField(int facultyId, String name, int capacity) throws Exception {
+        if(capacity <= 0) {
+            throw new Exception("Incorrect capacity");
+        }
+        Session session = SessionFactoryDecorator.openSession();
+        Faculty faculty = session.load(Faculty.class, facultyId);
+        Field field = new Field(name, capacity);
+        faculty.addField(field);
+        Transaction transaction = session.beginTransaction();
+        session.save(field);
+        transaction.commit();
+        session.close();
     }
-    Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Faculty> query = session.createQuery("SELECT F FROM Faculty F WHERE F.facultyId = :facultyId", Faculty.class);
-    query.setParameter("facultyId", facultyId);
-    Faculty faculty = query.getSingleResult();
-    Field field = new Field(name, capacity);
-    faculty.addField(field);
-    Transaction transaction = session.beginTransaction();
-    session.save(field);
-    transaction.commit();
-    session.close();
 }
 ```
+
+##### Wyjaśnienie:
+- Ładujemy obiekt faculty aby móc wykonać później odpowiednie mapowanie.
+- Następnie tworzymy nowy obiekt field zgodnie z zadanymi parametrami
+- W kolejnym etapie wykonanujemy funkcję addField znajdującą się w klasie Faculty, która dodaje obiekt field do setu kierunków studiów znajdującego się w obiekcie faculty oraz polu faculty znajdującemu się w obiekcie field przypisuje referencję do obiektu faculty 
+- Na koniec stworzony obiekt jest mapowany do bazy danych z opowiednim kluczem obcym.
+
+```java
+// set kierunków studiów oraz metoda addField w klasie Faculty:
+@OneToMany(mappedBy = "faculty")
+private Set<Field> fields = new LinkedHashSet<>();
+    
+public void addField(Field field){
+    field.setFaculty(this);
+    this.fields.add(field);
+}
+```
+
+```java
+// pole faculty w klsaie Field
+@Expose
+@ManyToOne
+@JoinColumn(name="FACULTY_FK")
+private Faculty faculty;
+```
+
 
 #### Przypisanie przedmiotu branego pod uwagę podczas rekrutacji do danego wydziału:
 
 ```java
-public void addMainSubjectToField(int fieldId, String subjectName) {
-    Session session = SessionFactoryDecorator.openSession();
-    TypedQuery<Field> query = session.createQuery("SELECT F FROM Field F WHERE F.fieldId = :fieldId", Field.class);
-    query.setParameter("fieldId", fieldId);
-    Field field = query.getSingleResult();
-    field.addMainSubject(subjectName);
-    Transaction transaction = session.beginTransaction();
-    session.update(field);
-    transaction.commit();
-    session.close();
+    public void addMainSubjectToField(int fieldId, String subjectName) {
+        Session session = SessionFactoryDecorator.openSession();
+        Field field = session.get(Field.class, fieldId);
+        field.addMainSubject(subjectName);
+        Transaction transaction = session.beginTransaction();
+        session.update(field);
+        transaction.commit();
+        session.close();
+    }
 }
 ```
 
@@ -151,7 +214,7 @@ public void addMainSubjectToField(int fieldId, String subjectName) {
 
 Aby uruchomić projekt wystarczy odpowiednio skonfigurować połączenie ze stworzoną uprzenio bazą danych w pliku hibernate.cfg.xml. Przykładowa konfiguracja połączenia z bazą danych o nazwie DB dostępną pod adresem http://localhost:5432/DB
 
-```
+```XML
 <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/DB</property>
 <property name="hibernate.connection.username">postgres</property>
